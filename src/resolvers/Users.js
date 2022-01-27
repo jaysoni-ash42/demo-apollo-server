@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { UserInputError } from "apollo-server";
 import { registerValidator, loginValidator } from "../util/userValidator.js";
+import { SECERET_KEY } from "../../config.js";
 
 const userResolvers = {
   Mutation: {
@@ -66,7 +67,7 @@ const userResolvers = {
           id: searchedUser.id,
           userName: userName,
         },
-        "seceret key",
+        SECERET_KEY,
         { expiresIn: "1h" }
       );
       return {

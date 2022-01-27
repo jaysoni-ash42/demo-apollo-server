@@ -6,6 +6,9 @@ import resolvers from "./src/resolvers/index.js";
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => ({
+    req,
+  }),
 });
 
 dbConnect().then(() => {
