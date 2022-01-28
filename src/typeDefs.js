@@ -54,4 +54,7 @@ export const typeDefs = gql`
     likePost(postId: ID!): SuccessObject!
     unlikePost(postId: ID!, likeId: ID!): SuccessObject!
   }
+  type Subscription {
+    newPost: Post!
+  }
 `;

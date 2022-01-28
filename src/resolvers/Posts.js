@@ -1,6 +1,9 @@
 import Post from "../Models/Post.js";
 import { authCheckAuth } from "../util/checkAuth.js";
 import { UserInputError, AuthenticationError } from "apollo-server";
+import { PubSub } from "graphql-subscriptions";
+const pubsub = new PubSub();
+
 const postResolvers = {
   Query: {
     async getPosts() {
@@ -35,6 +38,7 @@ const postResolvers = {
       });
       try {
         const newPost = await post.save();
+        pubsub.publish("NEWPOST_CREATED", { newPost: newPost });
         return newPost;
       } catch (e) {
         throw new Error(e);
@@ -113,7 +117,6 @@ const postResolvers = {
         throw new Error(e);
       }
     },
-
     async likePost(_, { postId }, context) {
       const { userName } = authCheckAuth(context);
       try {
@@ -163,6 +166,11 @@ const postResolvers = {
       } catch (e) {
         throw new Error(e);
       }
+    },
+  },
+  Subscritpion: {
+    newPost: {
+      subscribe: () => pubsub.asyncIterator(["NEWPOST_CREATED"]),
     },
   },
 };

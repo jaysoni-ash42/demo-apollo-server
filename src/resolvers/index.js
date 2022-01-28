@@ -17,6 +17,9 @@ const resolvers = {
     ...userReslvers.Mutation,
     ...postResolvers.Mutation,
   },
+  Subscription: {
+    ...postResolvers.Subscritpion,
+  },
 };
 
 export default resolvers;
